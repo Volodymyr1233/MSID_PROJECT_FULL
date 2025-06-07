@@ -10,7 +10,7 @@ import pickle
 
 
 preprocessor = call_preprocess(["CGPA", "Depression"])
-df = pd.read_csv("depr_dataset.csv")
+df = pd.read_csv("../depr_dataset.csv")
 df['Financial Stress'] = df['Financial Stress'].replace('?', np.nan)
 
 train_valid_df, test_df = train_test_split(df, test_size=0.2, random_state=42)

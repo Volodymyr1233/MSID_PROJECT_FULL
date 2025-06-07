@@ -22,7 +22,7 @@ transform_cat = Pipeline([
 def call_preprocess(removed_element_arr):
     preprocess = ColumnTransformer([
         ("num", transform_num, [x for x in numeric_columns if x not in removed_element_arr]),
-        ("cat", transform_cat, categoric_columns)
+        ("cat", transform_cat, [x for x in categoric_columns if x not in removed_element_arr])
     ])
 
     return preprocess
