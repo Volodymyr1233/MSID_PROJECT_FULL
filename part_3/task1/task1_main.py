@@ -11,12 +11,12 @@ df['Financial Stress'] = df['Financial Stress'].replace('?', np.nan)
 
 
 target_column = "Depression"
-drop_columns = ["id", "CGPA", "Depression"]
+drop_columns = ["id", "Depression"]
 
 x = df.drop(columns=drop_columns)
 y = df[target_column].astype(float).values
 
-preprocess = call_preprocess(["CGPA", "Depression"])
+preprocess = call_preprocess(["Depression"])
 
 skf = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
 
@@ -29,7 +29,7 @@ for fold, (train_index, test_index) in enumerate(skf.split(x, y), 1):
     x_train = preprocess.fit_transform(x_train_raw)
     x_test = preprocess.transform(x_test_raw)
 
-    model = LogisticRegrGradient(lr=0.1, epochs=200, batch_size=16)
+    model = LogisticRegrGradient(lr=0.005, epochs=200, batch_size=64)
     model.fit(x_train.toarray(), y_train)
 
     y_pred_class, y_pred_prob = model.predict(x_test.toarray())
@@ -37,6 +37,7 @@ for fold, (train_index, test_index) in enumerate(skf.split(x, y), 1):
     acc = accuracy_score(y_test, y_pred_class)
     loss = model.compute_cross_entropy(y_test, y_pred_prob)
 
+    print(f"Krok walidacji: {fold}")
     print(f"Accuracy: {acc:.4f}")
     print(f"Cross-Entropy Loss: {loss:.4f}")
 
